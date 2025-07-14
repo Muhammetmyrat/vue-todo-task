@@ -1,15 +1,10 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import { loadLayoutMiddleware } from './loadLayout.middleware'
 
-const routes: Array<RouteRecordRaw> = [
-	{
-		path: '/',
-		redirect: `/todos`
-	}
-]
+const routes: Array<RouteRecordRaw> = []
 
 const router = createRouter({
-	history: createWebHistory(import.meta.env.VITE_APP_BASE_URL),
+	history: createWebHistory(import.meta.env.VITE_APP_BASE_URL || '/'),
 	routes
 })
 

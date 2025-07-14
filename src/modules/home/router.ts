@@ -4,18 +4,18 @@ function Module() {
 	return import('./Module.vue')
 }
 
-function Todos() {
-	return import('./pages/Todos.vue')
+function Home() {
+	return import('./pages/Home.vue')
 }
 
 const moduleRoute = {
-	path: '/todos',
+	path: '/',
 	component: Module,
 	children: [
 		{
 			path: '',
-			name: 'todos',
-			component: Todos
+			name: 'home',
+			component: Home
 		}
 	]
 }

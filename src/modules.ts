@@ -1,7 +1,7 @@
 import { registerModules } from './helpers/register-modules'
 
-import todos from './modules/todos'
+import home from './modules/home'
 
 registerModules({
-	todos
+	home
 })

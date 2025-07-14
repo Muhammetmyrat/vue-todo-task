@@ -66,10 +66,10 @@ store.dispatch('todos/fetchTodos')
 </script>
 
 <template>
-	<div class="todo-page page-pt">
-		<div class="todo-page__container">
-			<div class="todo-page__content">
-				<h1 class="todo-page__title">ToDo List</h1>
+	<div class="todos page-pt">
+		<div class="todos__container">
+			<div class="todos__content">
+				<h1 class="todos__title">ToDo List</h1>
 
 				<Loader v-if="loadingStates.fetch" />
 
@@ -98,7 +98,7 @@ store.dispatch('todos/fetchTodos')
 </template>
 
 <style lang="scss" scoped>
-.todo-page {
+.todos {
 	width: 100%;
 	height: 100%;
 
