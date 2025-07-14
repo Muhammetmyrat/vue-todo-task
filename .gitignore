@@ -27,18 +27,18 @@ coverage
 
 *.tsbuildinfo
 
-# # Environment files
-# .env
-# .env.local
-# .env.development.local
-# .env.test.local
-# .env.production.local
-# .env.staging.local
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.staging.local
 
-# # Environment variables that may contain secrets
-# *.env*
+# Environment variables that may contain secrets
+*.env*
 
-# # Except these specific env files that can be committed (if needed)
-# !.env.example
-# !.env.sample
-# !.env.template
+# Except these specific env files that can be committed (if needed)
+!.env.example
+!.env.sample
+!.env.template

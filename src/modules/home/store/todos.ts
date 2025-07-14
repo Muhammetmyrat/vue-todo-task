@@ -1,9 +1,8 @@
-import type { ActionContext, Module } from 'vuex/types/index.d.ts'
-import type { Todo } from '../types'
-import { fetchTodos, createTodo, updateTodo, deleteTodo } from '../api/todos'
+import type { Module, ActionContext } from 'vuex/types/index.d.ts'
+import type { TodoItem } from '../types'
 
 export interface TodoState {
-	todos: Todo[]
+	todos: TodoItem[]
 	loading: Record<string, boolean>
 }
 
@@ -12,9 +11,9 @@ export interface RootState {
 }
 
 type TodoMutations = {
-	SET_TODOS: Todo[]
-	ADD_TODO: Todo
-	UPDATE_TODO: Todo
+	SET_TODOS: TodoItem[]
+	ADD_TODO: TodoItem
+	UPDATE_TODO: TodoItem
 	DELETE_TODO: number
 	SET_LOADING: { key: string; value: boolean }
 }
@@ -25,18 +24,20 @@ type TodoActionContext = {
 	state: TodoState
 } & Omit<ActionContext<TodoState, RootState>, 'commit' | 'dispatch'>
 
-async function handleErrorToast(
-	dispatch: TodoActionContext['dispatch'],
-	message = 'Something went wrong'
-) {
-	await dispatch(
-		'toast/addToast',
-		{
-			text: message,
-			status: 'error'
-		},
-		{ root: true }
-	)
+const mockTodos: TodoItem[] = [
+	{ id: 1, title: 'delectus aut autem', completed: false },
+	{ id: 2, title: 'quis ut nam facilis et officia qui', completed: false },
+	{ id: 3, title: 'fugiat veniam minus', completed: false },
+	{ id: 4, title: 'et porro tempora', completed: true },
+	{ id: 5, title: 'laboriosam mollitia...', completed: false },
+	{ id: 6, title: 'qui ullam ratione...', completed: false },
+	{ id: 7, title: 'illo expedita consequatur...', completed: false },
+	{ id: 8, title: 'quo adipisci enim...', completed: true },
+	{ id: 9, title: 'molestiae perspiciatis ipsa', completed: false }
+]
+
+function delay(ms: number) {
+	return new Promise(resolve => setTimeout(resolve, ms))
 }
 
 export const todosModule: Module<TodoState, RootState> = {
@@ -48,7 +49,7 @@ export const todosModule: Module<TodoState, RootState> = {
 	}),
 
 	getters: {
-		getTodos(state): Todo[] {
+		getTodos(state): TodoItem[] {
 			return state.todos
 		},
 		getLoading:
@@ -59,15 +60,17 @@ export const todosModule: Module<TodoState, RootState> = {
 	},
 
 	mutations: {
-		SET_TODOS(state, todos: Todo[]) {
+		SET_TODOS(state, todos: TodoItem[]) {
 			state.todos = todos
 		},
-		ADD_TODO(state, todo: Todo) {
+		ADD_TODO(state, todo: TodoItem) {
 			state.todos.unshift(todo)
 		},
-		UPDATE_TODO(state, updatedTodo: Todo) {
+		UPDATE_TODO(state, updatedTodo: TodoItem) {
 			const index = state.todos.findIndex(t => t.id === updatedTodo.id)
-			if (index !== -1) state.todos.splice(index, 1, updatedTodo)
+			if (index !== -1) {
+				state.todos.splice(index, 1, updatedTodo)
+			}
 		},
 		DELETE_TODO(state, id: number) {
 			state.todos = state.todos.filter(t => t.id !== id)
@@ -78,81 +81,58 @@ export const todosModule: Module<TodoState, RootState> = {
 	},
 
 	actions: {
-		async fetchTodos({ commit, dispatch }: TodoActionContext) {
+		async fetchTodos({ commit }: TodoActionContext) {
 			const key = 'fetchTodos'
 			try {
 				commit('SET_LOADING', { key, value: true })
-				const todos = await fetchTodos()
-				commit('SET_TODOS', todos)
+				await delay(1000)
+				commit('SET_TODOS', [...mockTodos])
 			} catch (error) {
-				console.error(error)
-				await handleErrorToast(dispatch, 'Failed to fetch todos')
+				console.error('fetchTodos error:', error)
 			} finally {
 				commit('SET_LOADING', { key, value: false })
 			}
 		},
 
-		async addTodo({ commit, dispatch }: TodoActionContext, title: string) {
+		async addTodo({ commit }: TodoActionContext, title: string) {
 			const key = 'addTodo'
 			try {
 				commit('SET_LOADING', { key, value: true })
-				const newTodo = await createTodo(title)
+				await delay(800)
+				const newTodo: TodoItem = {
+					id: Date.now(),
+					title,
+					completed: false
+				}
 				commit('ADD_TODO', newTodo)
-				await dispatch(
-					'toast/addToast',
-					{
-						text: 'Todo added successfully',
-						status: 'success'
-					},
-					{ root: true }
-				)
 			} catch (error) {
-				console.error(error)
-				await handleErrorToast(dispatch, 'Failed to add todo')
+				console.error('addTodo error:', error)
 			} finally {
 				commit('SET_LOADING', { key, value: false })
 			}
 		},
 
-		async updateTodo({ commit, dispatch }: TodoActionContext, todo: Todo) {
+		async updateTodo({ commit }: TodoActionContext, updatedTodo: TodoItem) {
 			const key = 'updateTodo'
 			try {
 				commit('SET_LOADING', { key, value: true })
-				const updated = await updateTodo(todo)
-				commit('UPDATE_TODO', updated)
-				await dispatch(
-					'toast/addToast',
-					{
-						text: 'Todo updated successfully',
-						status: 'info'
-					},
-					{ root: true }
-				)
+				await delay(700)
+				commit('UPDATE_TODO', updatedTodo)
 			} catch (error) {
-				console.error(error)
-				await handleErrorToast(dispatch, 'Failed to update todo')
+				console.error('updateTodo error:', error)
 			} finally {
 				commit('SET_LOADING', { key, value: false })
 			}
 		},
 
-		async deleteTodo({ commit, dispatch }: TodoActionContext, id: number) {
+		async deleteTodo({ commit }: TodoActionContext, id: number) {
 			const key = 'deleteTodo'
 			try {
 				commit('SET_LOADING', { key, value: true })
-				await deleteTodo(id)
+				await delay(500)
 				commit('DELETE_TODO', id)
-				await dispatch(
-					'toast/addToast',
-					{
-						text: 'Todo deleted',
-						status: 'warning'
-					},
-					{ root: true }
-				)
 			} catch (error) {
-				console.error(error)
-				await handleErrorToast(dispatch, 'Failed to delete todo')
+				console.error('deleteTodo error:', error)
 			} finally {
 				commit('SET_LOADING', { key, value: false })
 			}

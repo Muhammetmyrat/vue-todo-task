@@ -38,11 +38,20 @@ function handleDelete(id: number) {
 				class="todo-list__item"
 				:class="['todo-list__item', { 'todo-list__item--completed': todo.completed }]"
 			>
-				<Checkbox :model-value="todo.completed" @update:model-value="handleToggle(todo)" />
+				<Checkbox
+					:model-value="todo.completed"
+					:disabled="loading"
+					@update:model-value="handleToggle(todo)"
+				/>
 				<div class="todo-list__content">
 					<div class="todo-list__title">{{ todo.title }}</div>
 					<div class="todo-list__actions">
-						<button class="todo-list__action" aria-label="Edit todo" @click="handleEdit(todo)">
+						<button
+							class="todo-list__action"
+							:disabled="loading"
+							aria-label="Edit todo"
+							@click="handleEdit(todo)"
+						>
 							<Icon name="pencil" />
 						</button>
 						<button

@@ -20,6 +20,7 @@ const currentTodo = ref<TodoItem | null>(null)
 const isModalVisible = ref(false)
 
 const todos = computed(() => store.getters['todos/getTodos'])
+
 const loadingStates = computed(() => ({
 	fetch: store.getters['todos/getLoading'](LOADING_ACTIONS.FETCH),
 	add: store.getters['todos/getLoading'](LOADING_ACTIONS.ADD),
@@ -77,7 +78,7 @@ store.dispatch('todos/fetchTodos')
 					<TodoFormAdd :loading="loadingStates.add" @add="addTodo" />
 
 					<TodoList
-						:loading="loadingStates.delete"
+						:loading="loadingStates.delete || loadingStates.update"
 						:todos="todos"
 						@edit="showEditModal"
 						@toggle="toggleTodoStatus"
