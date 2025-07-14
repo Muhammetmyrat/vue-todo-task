@@ -1,0 +1,22 @@
+@use '../abstracts/global' as *;
+
+.cursor-pointer {
+	cursor: pointer;
+	user-select: none;
+}
+
+.page-pt {
+	padding-top: 60px;
+
+	@media screen and (max-width: $mobileSmall) {
+		padding-top: 20px;
+	}
+}
+
+@for $i from 1 through 10 {
+	.grid-#{$i} {
+		display: grid;
+		grid-template-columns: repeat(#{$i}, 1fr);
+		min-height: 0;
+	}
+}

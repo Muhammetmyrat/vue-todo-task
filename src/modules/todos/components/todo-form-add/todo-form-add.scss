@@ -1,0 +1,25 @@
+@use '@/assets/styles/abstracts/global.scss' as *;
+
+.todo-form {
+	width: 100%;
+	display: flex;
+	align-items: flex-start;
+	gap: 20px;
+
+	@media screen and (max-width: $mobileSmall) {
+		flex-direction: column;
+
+		.todo-form__field {
+			width: 100%;
+		}
+
+		button {
+			width: 100%;
+		}
+	}
+
+	&__field {
+		display: flex;
+		flex-grow: 1;
+	}
+}

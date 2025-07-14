@@ -1,0 +1,83 @@
+@use 'sass:math';
+@use './abstracts/mixins' as *;
+@use './abstracts/global' as *;
+
+// Обнуление и обшие параметры =======================================================================================================
+@use './base/variables' as *;
+@use './base/fonts';
+@use './base/null';
+@use './base/utilities';
+// Шрифт по умолчанию ================================================================================================================
+$fontSize: rem(14); // где 14(px) - размер шрифта по умолчанию из макета
+$fontFamily: 'Inter';
+//Основные цвета
+$mainColor: var(--Text-1-color);
+
+body {
+	line-height: 1;
+	font-size: $fontSize;
+	font-family: $fontFamily;
+	-ms-text-size-adjust: 100%;
+	-moz-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+	overflow-y: hidden;
+	overflow-x: hidden;
+	scroll-snap-type: y mandatory;
+	min-width: 0;
+	min-height: 100dvh;
+	color: $mainColor;
+	display: flex;
+	flex-direction: column;
+	background: var(--Background-2-color);
+
+	&._lock {
+		overflow: hidden;
+		-ms-touch-action: none;
+		touch-action: none;
+	}
+
+	&::-moz-selection {
+		color: var(--Background-2-color);
+		background-color: var(--Primary-blue-color);
+	}
+
+	&::selection {
+		color: var(--Background-2-color);
+		background-color: var(--Primary-blue-color);
+	}
+
+	#app {
+		display: flex;
+		flex-direction: column;
+		flex: 1 1 0%;
+	}
+}
+
+input,
+button,
+textarea {
+	font-family: $fontFamily;
+}
+
+button {
+	box-sizing: border-box;
+	-webkit-tap-highlight-color: transparent;
+	outline: 0;
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+[class*='__container'] {
+	@if ($maxWidthContainer > 0) {
+		max-width: rem($maxWidthContainer);
+		box-sizing: content-box;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	@if ($containerPadding > 0) {
+		padding-left: rem(math.div($containerPadding, 2));
+		padding-right: rem(math.div($containerPadding, 2));
+	}
+}
