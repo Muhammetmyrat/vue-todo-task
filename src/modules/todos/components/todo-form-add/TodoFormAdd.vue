@@ -4,7 +4,7 @@ import Button from '@/UI/Button.vue'
 
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
-import { todoAddSchema } from '../../schema'
+import { todoSchema } from '../../schema'
 
 interface Props {
 	loading: boolean
@@ -20,11 +20,11 @@ const { handleSubmit, errors, resetForm } = useForm({
 	initialValues: {
 		title: ''
 	},
-	validationSchema: toTypedSchema(todoAddSchema),
+	validationSchema: toTypedSchema(todoSchema),
 	validateOnMount: false
 })
 
-const handleTodoAdd = handleSubmit(async formValues => {
+const handleTodoAdd = handleSubmit(formValues => {
 	emit('add', formValues.title)
 
 	resetForm()

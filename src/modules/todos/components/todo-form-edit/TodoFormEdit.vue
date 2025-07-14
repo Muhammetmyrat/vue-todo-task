@@ -4,7 +4,7 @@ import TextField from '@/UI/TextField.vue'
 import Button from '@/UI/Button.vue'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
-import { todoAddSchema } from '../../schema'
+import { todoSchema } from '../../schema'
 import type { TodoItem } from '../../types'
 
 interface Props {
@@ -23,11 +23,11 @@ const { handleSubmit, errors } = useForm({
 	initialValues: {
 		title: props.todo?.title
 	},
-	validationSchema: toTypedSchema(todoAddSchema),
+	validationSchema: toTypedSchema(todoSchema),
 	validateOnMount: false
 })
 
-const handleTodoEdit = handleSubmit(async formValues => {
+const handleTodoEdit = handleSubmit(formValues => {
 	emit('edit', formValues.title)
 })
 </script>
