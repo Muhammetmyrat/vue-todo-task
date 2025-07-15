@@ -67,8 +67,8 @@
 		border: 1px solid var(--Separator-color);
 
 		&:disabled {
-			pointer-events: none;
 			cursor: not-allowed;
+			pointer-events: all;
 		}
 	}
 }
